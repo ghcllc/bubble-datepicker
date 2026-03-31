@@ -15,10 +15,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
-	datepicker "github.com/ethanefung/bubble-datepicker"
+	"charm.land/bubbles/v2/textinput"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
+	datepicker "github.com/CameronJHall/bubble-datepicker/v2"
 )
 
 type focus int
@@ -43,7 +43,7 @@ func initializeModel() tea.Model {
 	input := textinput.New()
 	input.Placeholder = "YYYY-MM-DD (enter date)"
 	input.Focus()
-	input.Width = 20
+	input.SetWidth(30)
 
 	return Model{
 		focus:      FocusInput,
@@ -65,7 +65,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// we'll probably want both bubbles to be vertically stacked
 		// and to take as much room as the can
 		return m, nil
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
@@ -104,8 +104,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m Model) View() string {
-	return lipgloss.JoinVertical(lipgloss.Left, inputStyles.Render(m.input.View()), m.datepicker.View())
+func (m Model) View() tea.View {
+	return tea.NewView(lipgloss.JoinVertical(lipgloss.Left, inputStyles.Render(m.input.View()), m.datepicker.View()))
 }
 
 func (m *Model) UpdateInput(msg tea.Msg) (textinput.Model, tea.Cmd) {
