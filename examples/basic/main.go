@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/ethanefung/bubble-datepicker"
+	tea "charm.land/bubbletea/v2"
+	"github.com/CameronJHall/bubble-datepicker/v2"
 )
 
 type model struct {
@@ -30,7 +30,7 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	// Is it a key press?
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 
 		// Cool, what was the actual key pressed?
 		switch msg.String() {
@@ -48,10 +48,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m model) View() string {
+func (m model) View() tea.View {
 
 	// Send the UI for rendering
-	return m.datepicker.View()
+	return tea.NewView(m.datepicker.View())
 }
 
 func main() {

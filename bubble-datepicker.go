@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/bubbles/key"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/key"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 // Focus is a value passed to `model.SetFocus` to indicate what component
@@ -67,15 +67,13 @@ type Styles struct {
 
 // DefaultStyles returns a default `Styles` struct
 func DefaultStyles() Styles {
-	// TODO: refactor for adaptive colors
-	r := lipgloss.DefaultRenderer()
 	return Styles{
-		Header:       r.NewStyle().Padding(1, 0, 0),
-		Date:         r.NewStyle().Padding(0, 1, 1),
-		HeaderText:   r.NewStyle().Bold(true),
-		Text:         r.NewStyle().Foreground(lipgloss.Color("247")),
-		SelectedText: r.NewStyle().Bold(true),
-		FocusedText:  r.NewStyle().Foreground(lipgloss.Color("212")).Bold(true),
+		Header:       lipgloss.NewStyle().Padding(1, 0, 0),
+		Date:         lipgloss.NewStyle().Padding(0, 1, 1),
+		HeaderText:   lipgloss.NewStyle().Bold(true),
+		Text:         lipgloss.NewStyle().Foreground(lipgloss.Color("247")),
+		SelectedText: lipgloss.NewStyle().Bold(true),
+		FocusedText:  lipgloss.NewStyle().Foreground(lipgloss.Color("212")).Bold(true),
 	}
 }
 
@@ -118,7 +116,7 @@ func (m Model) Init() tea.Cmd {
 // Update changes the state of the datepicker. Update satisfies the `tea.Model` interface
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		switch {
 		case key.Matches(msg, m.KeyMap.Quit):
 			return m, tea.Quit
@@ -252,7 +250,7 @@ func (m Model) View() string {
 
 	weekHeaders := []string{"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"}
 	for i, h := range weekHeaders {
-		weekHeaders[i] = m.Styles.Date.Copy().Inherit(m.Styles.HeaderText).Render(h)
+		weekHeaders[i] = m.Styles.Date.Inherit(m.Styles.HeaderText).Render(h)
 	}
 
 	cal := [][]string{weekHeaders}
@@ -277,7 +275,7 @@ func (m Model) View() string {
 			textStyle = m.Styles.SelectedText
 		}
 
-		out = style.Copy().Inherit(textStyle.Copy()).Render(out)
+		out = style.Inherit(textStyle).Render(out)
 		cal[j] = append(cal[j], out)
 
 		if day.Weekday() == time.Saturday {
