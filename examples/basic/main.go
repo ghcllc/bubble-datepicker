@@ -6,7 +6,6 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/CameronJHall/bubble-datepicker/v2"
 )
 
 type model struct {

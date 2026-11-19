@@ -1,4 +1,4 @@
-module github.com/CameronJHall/bubble-datepicker/v2
+module github.com/ghcllc/bubble-datepicker/v2
 
 go 1.25.0
 
